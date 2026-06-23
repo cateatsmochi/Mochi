@@ -144,8 +144,8 @@ export default function App() {
               </button>
 
               {/* Centered progress badge */}
-              <div className="text-[9px] font-mono tracking-wider font-bold text-brand-dark/45 uppercase bg-brand-teal/5 px-2.5 py-0.5 rounded-full border border-brand-teal/10">
-                Puzzles / {currentPuzzleIndex + 1} of {puzzles.length}
+              <div className="text-[10px] font-mono font-black text-brand-dark/60 bg-brand-teal/5 px-3 py-0.5 rounded-full border border-brand-teal/10">
+                {currentPuzzleIndex + 1} / {puzzles.length}
               </div>
 
               {/* Next page arrow */}
@@ -164,10 +164,10 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <span className="text-sm select-none">📋</span>
                 <div className="leading-tight">
-                  <div className="text-[9px] text-brand-teal font-sans font-bold">
-                    调查进度
+                  <div className="text-[10px] text-brand-teal font-sans font-black">
+                    {currentPuzzle.title.split('：')[0]}
                   </div>
-                  <p className="text-[8px] text-brand-dark/60 font-semibold">
+                  <p className="text-[8px] text-brand-dark/60 font-semibold leading-none mt-0.5">
                     已完成：{solvedIndices.length} / 5
                   </p>
                 </div>
