@@ -1,4 +1,4 @@
-export type PuzzleType = 'jigsaw' | 'seek' | 'ecology' | 'map' | 'grid';
+export type PuzzleType = 'jigsaw' | 'seek' | 'diversity' | 'ecology' | 'map' | 'grid';
 
 export interface Puzzle {
   id: number;
@@ -27,7 +27,7 @@ export const puzzles: Puzzle[] = [
     storyContext: '你手握一张申城水系图。从长江口、杭州湾到淀山湖，纵横交织的水流维系着本土水族与江南水乡的百年变迁。',
     hints: [
       '点击任意两个拼图块能将其直接互换位置。',
-      '将拼图格回复到正确的排列（可利用拼图右下角的数字 1-9 辅助标记排列对齐）。',
+      '将拼图格回复 to 正确的排列（可利用拼图右下角的数字 1-9 辅助标记排列对齐）。',
       '拼图完全还原后，系统会自动解开关卡。无需输入地址核验，您可以直达下一章！'
     ],
     correctAnswer: '天平路41号'
@@ -52,6 +52,23 @@ export const puzzles: Puzzle[] = [
   },
   {
     id: 3,
+    type: 'diversity',
+    title: '1.3 江湖之境：水体多样性科学考察',
+    subtitle: '人工湖泊与自然运河的生态博弈',
+    speciesName: '多样性群落 (Fish Community)',
+    scientificName: 'Shanghai Aquatic Biodiversity',
+    conservationStatus: 'Near Threatened',
+    description: '对比人工水体与历史天然河道的生物承载率。上海不同水体的鱼类多样性差异显著。请移步到『江湖之境』展墙下方，在实景科学考察图表中，分别探寻人造滴水湖与天然古运河的鱼类登记数量，通过滑动生态管阀破解生命差值密钥！',
+    storyContext: '请移步到『江湖之境』展墙下方，寻找标有【滴水湖生态对比】与【浦南/浦东古老连通运河】的科学考察实测展板。仔细翻看或查阅这两个水生环境目前分别发现了多少种“鱼类”。把找齐的两个神奇数字记录下来，还原到下方的多样性比对盘中。',
+    hints: [
+      '第一步：请找到『滴水湖』生态对比版块，仔细看上面写明的调查发现鱼类为多少“种”（小于30的一个偶数）。',
+      '第二步：请找到『浦南运河与浦东运河』大河流湿地标板，找到上面记载的调查发现鱼类为多少“种”（大于40的一个奇数）。',
+      '第三步：当你在计算盘中，分别通过 [+] 和 [-] 精准拨动匹配到正确的两组数字时，系统就会通过并自动算出多样性差值验证密钥！'
+    ],
+    correctAnswer: '23'
+  },
+  {
+    id: 4,
     type: 'ecology',
     title: '2.1 生存之战：河道侵袭与生态净化',
     subtitle: '直面核心威胁 - 守护最后的筑巢地',
@@ -68,7 +85,7 @@ export const puzzles: Puzzle[] = [
     correctAnswer: 'N9'
   },
   {
-    id: 4,
+    id: 5,
     type: 'map',
     title: '3.1 寻鱼之旅：生态走廊放流监测追踪',
     subtitle: '建立安全港湾 - 弄堂支流的生命引渡',
@@ -85,7 +102,7 @@ export const puzzles: Puzzle[] = [
     correctAnswer: 'Y8'
   },
   {
-    id: 5,
+    id: 6,
     type: 'grid',
     title: '3.2 终章结语：申城人人考查队 & 鱼干卡配对',
     subtitle: '多物种命运共同体 - 鱼类夹卡精密配比',

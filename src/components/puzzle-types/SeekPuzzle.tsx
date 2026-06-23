@@ -26,7 +26,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
   const tasks: SeekTask[] = [
     {
       id: 'task1',
-      question: '🔍 第一问：请看物理展墙，谁是【体型最大】的“长江鱼王”？',
+      question: '🔍 谁是【体型最大】的“长江鱼王”？',
       hint: '提示：体长可达数米，背部长有五行坚硬的刺状骨板，在深海及长江口洄游。',
       correctAnswer: 'sturgeon',
       options: [
@@ -37,7 +37,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
     },
     {
       id: 'task2',
-      question: '🔍 第二问：去实体展板寻找【能在泥滩上蹦跳】最特别的奇鱼？',
+      question: '🔍 谁是【能在泥滩上蹦跳】最特别的奇鱼？',
       hint: '提示：拥有一双鼓起的突出眼球，常出现在九段沙等沿海滩涂、浅滩沙地。',
       correctAnswer: 'mudskipper',
       options: [
@@ -48,7 +48,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
     },
     {
       id: 'task3',
-      question: '🔍 第三问：寻找【必须与河蚬等贝壳共生】的彩虹小鱼？',
+      question: '🔍 寻找【必须与河蚬等贝壳共生】的彩虹小鱼？',
       hint: '提示：身躯细扁，在阳光下呈现斑斓的青紫色，常出没于贝类砂砾间。',
       correctAnswer: 'bitterling',
       options: [
@@ -59,7 +59,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
     },
     {
       id: 'task4',
-      question: '🔍 第四问：寻找无鳞、长着四对长须的“贴地飞行鱼”？',
+      question: '🔍 寻找无鳞、长着四对长须的“贴地飞行鱼”？',
       hint: '提示：嘴部朝下，在潮湿幽暗的江底乱石缝中，靠敏锐的触觉贴身滑行。',
       correctAnswer: 'catfish',
       options: [

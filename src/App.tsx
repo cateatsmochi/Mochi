@@ -4,6 +4,7 @@ import PuzzleCard from './components/PuzzleCard';
 import GameInterface from './components/GameInterface';
 import JigsawPuzzle from './components/puzzle-types/JigsawPuzzle';
 import SeekPuzzle from './components/puzzle-types/SeekPuzzle';
+import DiversityPuzzle from './components/puzzle-types/DiversityPuzzle';
 import EcologyPuzzle from './components/puzzle-types/EcologyPuzzle';
 import MapPuzzle from './components/puzzle-types/MapPuzzle';
 import GridPuzzle from './components/puzzle-types/GridPuzzle';
@@ -168,7 +169,7 @@ export default function App() {
                     {currentPuzzle.title.split('：')[0]}
                   </div>
                   <p className="text-[8px] text-brand-dark/60 font-semibold leading-none mt-0.5">
-                    已完成：{solvedIndices.length} / 5
+                    已完成：{solvedIndices.length} / 6
                   </p>
                 </div>
               </div>
@@ -177,10 +178,10 @@ export default function App() {
               <div className="flex gap-1 py-0.5 justify-end">
                 {['江湖之境', '生存之战', '寻鱼之旅'].map((chapterName, index) => {
                   const completed = index === 0
-                    ? (solvedIndices.includes(0) && solvedIndices.includes(1))
+                    ? (solvedIndices.includes(0) && solvedIndices.includes(1) && solvedIndices.includes(2))
                     : index === 1
-                      ? solvedIndices.includes(2)
-                      : (solvedIndices.includes(3) && solvedIndices.includes(4));
+                      ? solvedIndices.includes(3)
+                      : (solvedIndices.includes(4) && solvedIndices.includes(5));
                   return (
                     <span
                       key={index}
@@ -215,18 +216,24 @@ export default function App() {
                 />
               )}
               {currentPuzzle.id === 3 && (
-                <EcologyPuzzle 
+                <DiversityPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 
                 />
               )}
               {currentPuzzle.id === 4 && (
-                <MapPuzzle 
+                <EcologyPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 
                 />
               )}
               {currentPuzzle.id === 5 && (
+                <MapPuzzle 
+                  onSolved={() => handleSetIsCurrentSolved(true)} 
+                  isSolved={isCurrentSolved} 
+                />
+              )}
+              {currentPuzzle.id === 6 && (
                 <GridPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 
