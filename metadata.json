@@ -1,0 +1,6 @@
+{
+  "name": "Shanghai Fish Puzzle",
+  "description": "An interactive puzzle-solving exhibition app focused on native Shanghai fish species.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
