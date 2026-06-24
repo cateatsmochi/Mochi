@@ -5,6 +5,8 @@ import { RefreshCw, CheckCircle2, HardHat, Sparkles } from 'lucide-react';
 interface DiversityPuzzleProps {
   onSolved: () => void;
   isSolved: boolean;
+  isDrawnSuccessfully?: boolean;
+  setIsDrawnSuccessfully?: (val: boolean) => void;
 }
 
 interface Point {
@@ -21,7 +23,12 @@ export const DIVERSITY_STATES = [
   { dishuiCount: 28, naturalCount: 55, description: '理想全自然网路：仿自然漫滩贯通，生物多样性空前丰沛' }
 ];
 
-export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleProps) {
+export default function DiversityPuzzle({ 
+  onSolved, 
+  isSolved,
+  isDrawnSuccessfully: externalDrawnSuccessfully,
+  setIsDrawnSuccessfully: externalSetDrawnSuccessfully
+}: DiversityPuzzleProps) {
   // Free state variables instead of fixed index
   const [dishuiCount, setDishuiCount] = useState<number>(15);
   const [naturalCount, setNaturalCount] = useState<number>(38);
@@ -32,7 +39,18 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
   const [drawPoints, setDrawPoints] = useState<Point[]>([]);
   const [circularityScore, setCircularityScore] = useState<number | null>(null);
   const [drawError, setDrawError] = useState<string | null>(null);
-  const [isDrawnSuccessfully, setIsDrawnSuccessfully] = useState(false);
+  
+  // Use local state if external is not provided
+  const [localDrawnSuccessfully, setLocalDrawnSuccessfully] = useState(false);
+  
+  const isDrawnSuccessfully = externalSetDrawnSuccessfully !== undefined ? !!externalDrawnSuccessfully : localDrawnSuccessfully;
+  const setIsDrawnSuccessfully = (val: boolean) => {
+    if (externalSetDrawnSuccessfully !== undefined) {
+      externalSetDrawnSuccessfully(val);
+    } else {
+      setLocalDrawnSuccessfully(val);
+    }
+  };
 
   const isComparisonSolved = isDrawnSuccessfully && dishuiCount === 24 && naturalCount === 47;
 
@@ -63,38 +81,38 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
     }
   };
 
-  // Dragging event handlers for the 6-state horizontal ecological scale
-  const [isSliding, setIsSliding] = useState(false);
+  // Individual plate dragging state
+  const [activeDragSide, setActiveDragSide] = useState<'left' | 'right' | null>(null);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [dragStartVal, setDragStartVal] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    setIsSliding(true);
+  const handlePlatePointerDown = (e: PointerEvent<HTMLDivElement>, side: 'left' | 'right') => {
+    e.stopPropagation();
+    setActiveDragSide(side);
+    setDragStartY(e.clientY);
+    setDragStartVal(side === 'left' ? dishuiCount : naturalCount);
     e.currentTarget.setPointerCapture(e.pointerId);
-    handlePointerMoveAtX(e.clientX);
   };
 
-  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!isSliding) return;
-    handlePointerMoveAtX(e.clientX);
+  const handlePlatePointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (!activeDragSide) return;
+    const deltaY = e.clientY - dragStartY;
+    // Drag down (positive deltaY) increases the count (making it heavier/sinking down)
+    // Drag up (negative deltaY) decreases the count (making it lighter/rising up)
+    const change = Math.round(deltaY / 4);
+    const newVal = Math.max(0, dragStartVal + change);
+    if (activeDragSide === 'left') {
+      setDishuiCount(newVal);
+    } else {
+      setNaturalCount(newVal);
+    }
   };
 
-  const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
-    setIsSliding(false);
+  const handlePlatePointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (!activeDragSide) return;
     e.currentTarget.releasePointerCapture(e.pointerId);
-  };
-
-  const handlePointerMoveAtX = (clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const relativePercent = Math.max(0, Math.min(1, x / rect.width));
-    
-    // Linearly interpolate ranges: dishuiCount goes 10..35, naturalCount goes 20..65
-    // At center-right area (~54% width) it crosses 24 and 47 exactly
-    const newDishui = Math.round(10 + relativePercent * 25);
-    const newNatural = Math.round(20 + relativePercent * 50);
-    setDishuiCount(newDishui);
-    setNaturalCount(newNatural);
+    setActiveDragSide(null);
   };
 
   // Redraw guide circle template (now pure black, no guides)
@@ -311,7 +329,15 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
         </div>
 
         {/* DRAWING BOX */}
-        <div className="relative border border-slate-800 rounded-xl overflow-hidden bg-slate-950 p-2 shadow-md w-[216px] h-[216px] touch-none flex items-center justify-center">
+        <div 
+          className="relative border border-slate-800 rounded-xl overflow-hidden shadow-md w-[216px] h-[216px] touch-none flex items-center justify-center transition-all duration-500"
+          style={{
+            backgroundColor: isDrawnSuccessfully ? 'transparent' : '#020617',
+            backgroundImage: isDrawnSuccessfully ? 'url(/images/dishuihu.jpg)' : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
           <canvas
             ref={canvasRef}
             onMouseDown={handleStartDraw}
@@ -322,23 +348,23 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
             onTouchMove={handleDrawing}
             onTouchEnd={handleStopDraw}
             className={`bg-transparent cursor-crosshair block transition-opacity duration-300 ${
-              isDrawnSuccessfully ? 'opacity-95' : 'opacity-100'
+              isDrawnSuccessfully ? 'opacity-10' : 'opacity-100'
             }`}
           />
 
           {/* Clear success center text if drawn OK */}
           {isDrawnSuccessfully && (
-            <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-3 text-center bg-teal-950/30 backdrop-blur-3xs">
+            <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-3 text-center bg-transparent">
               <motion.div 
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="bg-slate-900/95 border border-emerald-500/50 p-4 rounded-xl shadow-lg max-w-[180px]"
+                className="bg-brand-paper/20 border border-brand-teal/20 p-3.5 rounded-xl max-w-[180px] backdrop-blur-xs shadow-xs"
               >
-                <p className="text-xs font-extrabold text-emerald-400 font-sans tracking-wide">
+                <p className="text-xs font-black text-brand-dark font-sans tracking-wide">
                   滴水湖圆形湖面筑造成功
                 </p>
                 {circularityScore !== null && (
-                  <p className="text-[11px] font-bold text-cyan-400 mt-1 font-mono">
+                  <p className="text-[10.5px] font-black text-brand-green mt-1 font-mono">
                     圆度：{Math.round(circularityScore * 100)}%
                   </p>
                 )}
@@ -370,11 +396,7 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
                 <Sparkles className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                 <span>滴水湖落成！圆度评估: {circularityScore !== null ? Math.round(circularityScore * 100) : 80}% (已达标，请用下方天平比对)</span>
               </motion.span>
-            ) : (
-              <span className="text-[11px] text-brand-dark/70 font-medium select-none">
-                在画板上画一个正圆
-              </span>
-            )}
+            ) : null}
           </AnimatePresence>
         </div>
 
@@ -420,72 +442,111 @@ export default function DiversityPuzzle({ onSolved, isSolved }: DiversityPuzzleP
               </span>
             </div>
 
-            {/* Draggable Balance Container with pointer capture */}
-            <div 
-              ref={containerRef}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-              className="py-1 px-2 select-none flex flex-col items-center bg-slate-50/80 rounded-2xl border border-slate-100 shadow-inner relative overflow-visible cursor-grab active:cursor-grabbing touch-none"
-            >
-              <svg width="100%" height="115" viewBox="0 0 300 115" className="max-w-[280px] w-full overflow-visible select-none pointer-events-none">
-                {/* Scale Base Center Shadow */}
-                <ellipse cx="150" cy="98" rx="55" ry="4" fill="rgba(15,23,42,0.06)" />
-                
-                {/* Column Base Stand */}
-                <polygon points="138,98 162,98 150,90" fill="#334155" />
-                {/* Column Pillar */}
-                <line x1="150" y1="90" x2="150" y2="42" stroke="#334155" strokeWidth="4" strokeLinecap="round" />
-                <circle cx="150" cy="42" r="4.5" fill="#0f172a" />
+            {/* Interactive Plate overlays */}
+            {(() => {
+              const leftInputPercentX = (leftHookX / 300) * 100;
+              const leftInputPercentY = ((leftHookY + 23) / 115) * 100;
 
-                {/* Rotated Beam */}
-                <g style={{ transform: `rotate(${angleDegrees}deg)`, transformOrigin: '150px 42px', transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
-                  <line x1="70" y1="42" x2="230" y2="42" stroke="#1e293b" strokeWidth="3.5" strokeLinecap="round" />
-                  <circle cx="70" cy="42" r="2.5" fill="#0f172a" />
-                  <circle cx="230" cy="42" r="2.5" fill="#0f172a" />
-                </g>
+              const rightInputPercentX = (rightHookX / 300) * 100;
+              const rightInputPercentY = ((rightHookY + 23) / 115) * 100;
 
-                {/* Left Plate (🔵 Blue, Artificial Dishui Lake) hanging dynamically */}
-                <g style={{ transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
-                  {/* Cords hanging from Left Hook */}
-                  <line x1={leftHookX} y1={leftHookY} x2={leftHookX - 16} y2={leftHookY + 34} stroke="#64748b" strokeWidth="1" />
-                  <line x1={leftHookX} y1={leftHookY} x2={leftHookX + 16} y2={leftHookY + 34} stroke="#64748b" strokeWidth="1" />
-                  {/* Plate bottom */}
-                  <path d={`M ${leftHookX - 16},${leftHookY + 34} Q ${leftHookX},${leftHookY + 44} ${leftHookX + 16},${leftHookY + 34} Z`} fill="rgba(6,182,212,0.12)" stroke="#0891b2" strokeWidth="1.5" />
-                  
-                  {/* Species quantity */}
-                  <text x={leftHookX} y={leftHookY + 28} textAnchor="middle" className="text-[12px] font-black font-mono fill-cyan-800">
-                    {dishuiCount}
-                  </text>
-                  <text x={leftHookX} y={leftHookY + 48} textAnchor="middle" className="text-[7.5px] font-bold fill-cyan-900/60 font-sans tracking-wide">
-                    滴水湖(人工)
-                  </text>
-                </g>
+              return (
+                <div 
+                  ref={containerRef}
+                  className="py-1 px-2 select-none flex flex-col items-center bg-slate-50/80 rounded-2xl border border-slate-100 shadow-inner relative overflow-visible w-full max-w-[280px]"
+                  style={{ height: '115px' }}
+                >
+                  <svg width="100%" height="115" viewBox="0 0 300 115" className="absolute inset-0 w-full h-full overflow-visible select-none pointer-events-none z-0">
+                    {/* Scale Base Center Shadow */}
+                    <ellipse cx="150" cy="98" rx="55" ry="4" fill="rgba(15,23,42,0.06)" />
+                    
+                    {/* Column Base Stand */}
+                    <polygon points="138,98 162,98 150,90" fill="#334155" />
+                    {/* Column Pillar */}
+                    <line x1="150" y1="90" x2="150" y2="42" stroke="#334155" strokeWidth="4" strokeLinecap="round" />
+                    <circle cx="150" cy="42" r="4.5" fill="#0f172a" />
 
-                {/* Right Plate (🟢 Green, Natural canal) hanging dynamically */}
-                <g style={{ transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
-                  {/* Cords hanging from Right Hook */}
-                  <line x1={rightHookX} y1={rightHookY} x2={rightHookX - 16} y2={rightHookY + 34} stroke="#64748b" strokeWidth="1" />
-                  <line x1={rightHookX} y1={rightHookY} x2={rightHookX + 16} y2={rightHookY + 34} stroke="#64748b" strokeWidth="1" />
-                  {/* Plate bottom */}
-                  <path d={`M ${rightHookX - 16},${rightHookY + 34} Q ${rightHookX},${rightHookY + 44} ${rightHookX + 16},${rightHookY + 34} Z`} fill="rgba(16,185,129,0.12)" stroke="#059669" strokeWidth="1.5" />
-                  
-                  {/* Species quantity */}
-                  <text x={rightHookX} y={rightHookY + 28} textAnchor="middle" className="text-[12px] font-black font-mono fill-emerald-800">
-                    {naturalCount}
-                  </text>
-                  <text x={rightHookX} y={rightHookY + 48} textAnchor="middle" className="text-[7.5px] font-bold fill-emerald-900/60 font-sans tracking-wide">
-                    古运河(天然)
-                  </text>
-                </g>
-              </svg>
+                    {/* Rotated Beam */}
+                    <g style={{ transform: `rotate(${angleDegrees}deg)`, transformOrigin: '150px 42px', transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
+                      <line x1="70" y1="42" x2="230" y2="42" stroke="#1e293b" strokeWidth="3.5" strokeLinecap="round" />
+                      <circle cx="70" cy="42" r="2.5" fill="#0f172a" />
+                      <circle cx="230" cy="42" r="2.5" fill="#0f172a" />
+                    </g>
 
-              {/* Touch Helper hint */}
-              <div className="text-[9.5px] text-teal-700/60 font-medium select-none text-center pb-1 font-sans">
-                {isSliding ? '✍️ 正在拖拽横梁...' : '💡 水平滑拖天平改变数值，或在下方直接键入/增减精确调整'}
-              </div>
-            </div>
+                    {/* Left Plate (🔵 Blue, Artificial Dishui Lake) hanging dynamically */}
+                    <g style={{ transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
+                      {/* Cords hanging from Left Hook */}
+                      <line x1={leftHookX} y1={leftHookY} x2={leftHookX - 16} y2={leftHookY + 34} stroke="#64748b" strokeWidth="1" />
+                      <line x1={leftHookX} y1={leftHookY} x2={leftHookX + 16} y2={leftHookY + 34} stroke="#64748b" strokeWidth="1" />
+                      {/* Plate bottom */}
+                      <path d={`M ${leftHookX - 16},${leftHookY + 34} Q ${leftHookX},${leftHookY + 44} ${leftHookX + 16},${leftHookY + 34} Z`} fill="rgba(6,182,212,0.12)" stroke="#0891b2" strokeWidth="1.5" />
+                      
+                      {/* Text label underneath */}
+                      <text x={leftHookX} y={leftHookY + 48} textAnchor="middle" className="text-[7.5px] font-bold fill-cyan-900/60 font-sans tracking-wide">
+                        滴水湖(人工)
+                      </text>
+                    </g>
+
+                    {/* Right Plate (🟢 Green, Natural canal) hanging dynamically */}
+                    <g style={{ transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)' }}>
+                      {/* Cords hanging from Right Hook */}
+                      <line x1={rightHookX} y1={rightHookY} x2={rightHookX - 16} y2={rightHookY + 34} stroke="#64748b" strokeWidth="1" />
+                      <line x1={rightHookX} y1={rightHookY} x2={rightHookX + 16} y2={rightHookY + 34} stroke="#64748b" strokeWidth="1" />
+                      {/* Plate bottom */}
+                      <path d={`M ${rightHookX - 16},${rightHookY + 34} Q ${rightHookX},${rightHookY + 44} ${rightHookX + 16},${rightHookY + 34} Z`} fill="rgba(16,185,129,0.12)" stroke="#059669" strokeWidth="1.5" />
+                      
+                      {/* Text label underneath */}
+                      <text x={rightHookX} y={rightHookY + 48} textAnchor="middle" className="text-[7.5px] font-bold fill-emerald-900/60 font-sans tracking-wide">
+                        古运河(天然)
+                      </text>
+                    </g>
+                  </svg>
+
+                  {/* Left Plate Interactive Drag Overlay & Display */}
+                  <div
+                    onPointerDown={(e) => handlePlatePointerDown(e, 'left')}
+                    onPointerMove={handlePlatePointerMove}
+                    onPointerUp={handlePlatePointerUp}
+                    onPointerCancel={handlePlatePointerUp}
+                    style={{
+                      position: 'absolute',
+                      left: `${leftInputPercentX}%`,
+                      top: `${leftInputPercentY}%`,
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                    className="w-14 h-14 flex items-center justify-center cursor-ns-resize z-20 hover:scale-105 active:scale-95 transition-transform"
+                  >
+                    <div className="w-10 text-center py-0.5 bg-white/90 border border-cyan-200 shadow-xs rounded text-[11px] font-mono font-black text-cyan-800 select-none">
+                      {dishuiCount}
+                    </div>
+                  </div>
+
+                  {/* Right Plate Interactive Drag Overlay & Display */}
+                  <div
+                    onPointerDown={(e) => handlePlatePointerDown(e, 'right')}
+                    onPointerMove={handlePlatePointerMove}
+                    onPointerUp={handlePlatePointerUp}
+                    onPointerCancel={handlePlatePointerUp}
+                    style={{
+                      position: 'absolute',
+                      left: `${rightInputPercentX}%`,
+                      top: `${rightInputPercentY}%`,
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                    className="w-14 h-14 flex items-center justify-center cursor-ns-resize z-20 hover:scale-105 active:scale-95 transition-transform"
+                  >
+                    <div className="w-10 text-center py-0.5 bg-white/90 border border-emerald-200 shadow-xs rounded text-[11px] font-mono font-black text-emerald-800 select-none">
+                      {naturalCount}
+                    </div>
+                  </div>
+
+                  {/* Touch Helper hint */}
+                  <div className="absolute bottom-1 w-full text-[9.5px] text-teal-700/60 font-medium select-none text-center font-sans">
+                    {activeDragSide ? `✍️ 正在拖拽${activeDragSide === 'left' ? '滴水湖' : '古运河'}托盘...` : '💡 可在托盘上上下拖拽改变数值，或在下方区域直接输入/增减精确调整'}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Direct Digital Interlock Controls (Replacing 1-6 button phases) */}
             <div className="grid grid-cols-2 gap-3 w-full max-w-[280px] mx-auto pt-1 pb-1">

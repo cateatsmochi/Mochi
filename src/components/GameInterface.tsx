@@ -7,13 +7,15 @@ interface GameInterfaceProps {
   onCorrect: () => void;
   isCurrentSolved: boolean;
   setIsCurrentSolved: (val: boolean) => void;
+  isDrawnSuccessfully?: boolean;
 }
 
 export default function GameInterface({
   puzzle,
   onCorrect,
   isCurrentSolved,
-  setIsCurrentSolved
+  setIsCurrentSolved,
+  isDrawnSuccessfully = false
 }: GameInterfaceProps) {
   // Segmented input state
   const [addressPart1, setAddressPart1] = useState('');
@@ -88,12 +90,12 @@ export default function GameInterface({
           {isCurrentSolved ? (
             <div className="animate-fade-in py-1">
               <p className="text-sm font-bold text-emerald-800 leading-relaxed md:px-4">
-                {puzzle.id === 1 ? '恭喜！生态河网重建完成' :
+                {puzzle.id === 1 ? '恭喜！生态河网重建完成。截至2022年底，上海已有河道46771条，湖泊51个' :
                  puzzle.id === 2 ? '恭喜！四大明星申鱼全部寻齐' :
                  puzzle.id === 3 ? '恭喜！滴水湖生态多样性落差密码破解完成！' :
                  puzzle.id === 4 ? '恭喜！水生家园净化完成' :
-                 puzzle.id === 5 ? '恭喜！外来入侵物种竹帘关卡核验完成！是的，这就是对上海本土鱼类威胁最大的生物' :
-                 puzzle.id === 6 ? '恭喜！生态放流走廊连通成功' :
+                 puzzle.id === 5 ? '恭喜！生命暗角关卡核验完成！这就是对上海本土鱼类威胁最大的生物：人类自身。' :
+                 puzzle.id === 6 ? '恭喜！原来一平方米就可以建一个博物馆，你也来加入让博物馆越来越多吧！' :
                  '恭喜！水流格栅密码核验完成'}
               </p>
             </div>
@@ -105,10 +107,10 @@ export default function GameInterface({
               <p className="text-xs font-medium text-brand-dark/80 leading-relaxed md:px-4 text-balance">
                 {puzzle.id === 1 ? '点击任意两个方块可以使它们互换，还原“上海水系图”' :
                  puzzle.id === 2 ? '依据现场「江湖之境」实景展墙上的特有本土水族分布，在下方题目中答对全部4个问题' :
-                 puzzle.id === 3 ? '利用滑拖或输入两端的本土鱼类种数揭开滴水湖与古运河的实测落差值' :
+                 puzzle.id === 3 ? (isDrawnSuccessfully ? '利用滑拖或输入两端的本土鱼类种数揭开滴水湖与古运河的实测落差值' : '在上方画板画一个正圆以筑造滴水湖圆形湖面') :
                  puzzle.id === 4 ? '将水体内各种核心生态威胁物品拖入下方对应的保护解密站中以激活气泡信码' :
-                 puzzle.id === 5 ? '在上方掀开物理防光帘（或左右轻拖模拟帘子），并在下方点击按钮确认开启' :
-                 puzzle.id === 6 ? '移动放流队避开路障，将中华鱼苗安全送达目的地以获取信令密码' :
+                 puzzle.id === 5 ? '请前往现场的「生存之战」展区，找到挂有遮光提示的物理帘子并亲手拉开它。找出对本土鱼类威胁最大的生物名称，并在下方验证框中输入。' :
+                 puzzle.id === 6 ? '请在上方答对关于“小小博物馆”的两个谜题' :
                  '根据前4个卡槽对应的双对角对称律，推选并选取第5组匹配的常数数字'}
               </p>
             </div>
@@ -116,10 +118,10 @@ export default function GameInterface({
         </div>
 
         {/* Answer input fields, only visible before solving non-jigsaw and non-seek levels */}
-        {!isCurrentSolved && puzzle.type !== 'jigsaw' && puzzle.type !== 'seek' && puzzle.type !== 'diversity' && puzzle.type !== 'curtain' && (
+        {!isCurrentSolved && puzzle.type !== 'jigsaw' && puzzle.type !== 'seek' && puzzle.type !== 'diversity' && puzzle.type !== 'curtain' && puzzle.type !== 'ecology' && puzzle.type !== 'map' && (
           <div className="bg-brand-cream/40 p-4 rounded-xl border border-brand-teal/10 space-y-2.5 animate-fade-in">
             <span className="text-[10px] text-brand-dark/70 uppercase tracking-wider font-mono block text-center font-bold">
-              {puzzle.type === 'ecology' ? '输入查获的气泡复苏码' : puzzle.type === 'map' ? '输入捕获的追踪芯片码' : '输入计算得出的格栅密码值'}
+              输入计算得出的格栅密码值
             </span>
             
             <div className="flex items-center justify-center gap-2">
@@ -181,7 +183,7 @@ export default function GameInterface({
               disabled
               className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none"
             >
-              等待天平滑移吻合
+              {isDrawnSuccessfully ? '等待天平滑移吻合' : '请先在画板中绘制一个圆'}
             </button>
           ) : puzzle.type === 'curtain' ? (
             <button
@@ -189,6 +191,20 @@ export default function GameInterface({
               className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none animate-pulse"
             >
               请掀开上方的保护帘
+            </button>
+          ) : puzzle.type === 'ecology' ? (
+            <button
+              disabled
+              className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none"
+            >
+              请清除河道内所有的生态威胁
+            </button>
+          ) : puzzle.type === 'map' ? (
+            <button
+              disabled
+              className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none animate-pulse"
+            >
+              请在上方答对两个博物馆谜题
             </button>
           ) : (
             <button

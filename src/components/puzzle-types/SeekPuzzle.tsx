@@ -118,7 +118,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
               id={`seek-card-${task.id}`}
               className={`p-3.5 rounded-2xl border-2 transition-all duration-300 ${
                 isCorrect 
-                  ? 'bg-emerald-50/70 border-emerald-500/30' 
+                  ? 'bg-brand-green/10 border-brand-green/30' 
                   : userSelection && !isCorrect 
                     ? 'bg-rose-50/70 border-rose-500/20' 
                     : 'bg-white border-brand-teal/10 shadow-sm'
@@ -134,7 +134,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
                   </p>
                 </div>
                 {isCorrect && (
-                  <span className="bg-emerald-500 text-white text-[11px] px-2 py-0.5 rounded-full font-bold uppercase select-none shrink-0">
+                  <span className="bg-brand-green text-white text-[11px] px-2 py-0.5 rounded-full font-bold uppercase select-none shrink-0">
                     正确 ✓
                   </span>
                 )}
@@ -159,7 +159,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
                       className={`px-2 py-2 rounded-xl text-center border flex items-center justify-center transition-all ${buttonHeightClass} ${
                         isSelected
                           ? isCorrect
-                            ? 'bg-emerald-500 border-emerald-500 text-white shadow-sm font-black'
+                            ? 'bg-brand-green border-brand-green text-white shadow-sm font-black'
                             : 'bg-rose-500 border-rose-500 text-white shadow-sm font-black'
                           : 'bg-brand-cream/30 text-brand-dark border-brand-teal/10 hover:bg-brand-cream/80 active:scale-95 font-medium'
                       } ${isSolved ? 'cursor-default' : 'cursor-pointer'}`}
@@ -187,8 +187,8 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
 
       {/* Success Summary Frame */}
       {isSolved && (
-        <div className="bg-emerald-50 border-2 border-emerald-500/20 rounded-2xl p-4 space-y-2 select-text animate-fade-in">
-          <p className="text-xs font-black text-emerald-800 leading-snug flex items-center gap-1">
+        <div className="bg-brand-green/10 border-2 border-brand-green/25 rounded-2xl p-4 space-y-2 select-text animate-fade-in">
+          <p className="text-xs font-black text-brand-green leading-snug flex items-center gap-1">
             🌸 恭喜！您已成功解答实体展区的四大明星申鱼：
           </p>
           <div className="text-[11px] text-brand-dark/80 leading-relaxed pl-1.5 space-y-1">

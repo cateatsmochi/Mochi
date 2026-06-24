@@ -213,7 +213,7 @@ export default function EcologyPuzzle({ onSolved, isSolved }: EcologyPuzzleProps
       if (nextRemoved.length === threats.length) {
         playSuccessChime();
         onSolved();
-        setActiveMessage('🎉 所有的威胁都已化解，九刺鱼生境已恢复完美微循环！看，它吐出的气泡自动拼出了生态复苏密码：【 N9 】！');
+        setActiveMessage('🎉 所有的威胁都已化解，九刺鱼生境已恢复完美微循环，生态家园复苏成功！');
       }
     } else {
       playWaterPlop();
@@ -268,22 +268,7 @@ export default function EcologyPuzzle({ onSolved, isSolved }: EcologyPuzzleProps
           </svg>
         </div>
 
-        {/* Bubbles code - Only shows when fully solved */}
-        {isSolved ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-brand-dark/10 pointer-events-none transition-all duration-1000 z-40">
-            <svg viewBox="0 0 200 120" className="w-48 h-28 text-white drop-shadow-[0_2px_8px_rgba(0,130,153,0.4)] animate-pulse">
-              <g fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" strokeDasharray="1 6">
-                {/* Letter N path of bubbles */}
-                <path d="M 50 20 L 50 100 M 50 20 L 95 100 M 95 20 L 95 100" />
-                {/* Number 9 path of bubbles */}
-                <path d="M 125 45 C 125 20, 160 20, 160 45 C 160 70, 125 65, 125 45 M 160 30 L 160 100 C 160 110, 140 105, 130 95" />
-              </g>
-              <text x="100" y="115" fill="#4A957E" fontSize="9.5" fontWeight="bold" textAnchor="middle" letterSpacing="1.5">
-                生态复苏密码：N9
-              </text>
-            </svg>
-          </div>
-        ) : null}
+
 
         {/* Threat & Restored Objects Map */}
         {threats.map((threat) => {
@@ -356,11 +341,6 @@ export default function EcologyPuzzle({ onSolved, isSolved }: EcologyPuzzleProps
 
       {/* Target Conservation & Sorting Terminals (Drop Zones) */}
       <div className="space-y-2">
-        <div className="text-[10px] font-black tracking-wide text-brand-dark/70 flex items-center gap-1">
-          <ShieldAlert className="w-3.5 h-3.5 text-brand-teal" />
-          <span>生态治理解密站 (请将威胁物拖放至下方对应设施内):</span>
-        </div>
-
         <div className="grid grid-cols-2 gap-2.5">
           {targets.map((target) => {
             const isMatched = removedHazards.some(id => threats.find(t => t.id === id)?.targetId === target.id);
@@ -405,32 +385,6 @@ export default function EcologyPuzzle({ onSolved, isSolved }: EcologyPuzzleProps
             );
           })}
         </div>
-      </div>
-
-      {/* Conservation Log Dashboard */}
-      <div className="bg-brand-cream/80 border border-brand-teal/15 rounded-xl p-3.5 min-h-[64px] transition-colors text-left shadow-2xs">
-        <div className="text-[10px] uppercase font-bold tracking-widest text-brand-dark/50 mb-1 font-mono flex items-center gap-1 select-none">
-          <HelpCircle className="w-3 h-3 text-brand-teal" />
-          <span>保护协作日志 / ECO-LOGS</span>
-        </div>
-        <p className="text-xs text-brand-dark leading-relaxed font-semibold italic">
-          「 {activeMessage} 」
-        </p>
-        
-        {/* Dynamic Progress Indicator */}
-        {!isSolved && (
-          <div className="mt-3 flex items-center gap-2.5 select-none">
-            <div className="flex-1 bg-brand-teal/10 h-1.5 rounded-full overflow-hidden">
-              <div 
-                className="bg-brand-teal h-full transition-all duration-300"
-                style={{ width: `${(removedHazards.length / threats.length) * 100}%` }}
-              />
-            </div>
-            <span className="text-[9px] font-mono text-brand-dark/70 font-bold whitespace-nowrap">
-              净化进度: {removedHazards.length} / {threats.length}
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );

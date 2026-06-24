@@ -18,12 +18,14 @@ export default function App() {
   const [isCurrentSolved, setIsCurrentSolved] = useState(false);
   const [solvedIndices, setSolvedIndices] = useState<number[]>([]);
   const [inventory, setInventory] = useState<string[]>([]);
+  const [isDrawnSuccessfully, setIsDrawnSuccessfully] = useState(false);
 
   const currentPuzzle = puzzles[currentPuzzleIndex];
 
   // Starts the interactive game
   const startGame = () => {
     playWaveSplash();
+    setIsDrawnSuccessfully(false);
     setGameState('playing');
   };
 
@@ -47,6 +49,7 @@ export default function App() {
       const nextIdx = currentPuzzleIndex + 1;
       setCurrentPuzzleIndex(nextIdx);
       setIsCurrentSolved(solvedIndices.includes(nextIdx));
+      setIsDrawnSuccessfully(solvedIndices.includes(2));
     } else {
       playSuccessChime();
       setGameState('victory');
@@ -59,6 +62,7 @@ export default function App() {
       const prevIdx = currentPuzzleIndex - 1;
       setCurrentPuzzleIndex(prevIdx);
       setIsCurrentSolved(solvedIndices.includes(prevIdx));
+      setIsDrawnSuccessfully(solvedIndices.includes(2));
     } else {
       // Go back to welcome page
       setGameState('welcome');
@@ -77,6 +81,7 @@ export default function App() {
     setIsCurrentSolved(false);
     setSolvedIndices([]);
     setInventory([]);
+    setIsDrawnSuccessfully(false);
     setGameState('welcome');
   };
 
@@ -219,7 +224,9 @@ export default function App() {
               {currentPuzzle.id === 3 && (
                 <DiversityPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
-                  isSolved={isCurrentSolved} 
+                  isSolved={isCurrentSolved}
+                  isDrawnSuccessfully={isDrawnSuccessfully}
+                  setIsDrawnSuccessfully={setIsDrawnSuccessfully}
                 />
               )}
               {currentPuzzle.id === 4 && (
@@ -254,6 +261,7 @@ export default function App() {
               onCorrect={handleNext}
               isCurrentSolved={isCurrentSolved}
               setIsCurrentSolved={handleSetIsCurrentSolved}
+              isDrawnSuccessfully={isDrawnSuccessfully}
             />
           </div>
         )}
