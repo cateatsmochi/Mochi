@@ -8,6 +8,7 @@ import DiversityPuzzle from './components/puzzle-types/DiversityPuzzle';
 import EcologyPuzzle from './components/puzzle-types/EcologyPuzzle';
 import MapPuzzle from './components/puzzle-types/MapPuzzle';
 import GridPuzzle from './components/puzzle-types/GridPuzzle';
+import CurtainPuzzle from './components/puzzle-types/CurtainPuzzle';
 import { playWaterPlop, playSuccessChime, playWaveSplash } from './utils/audio';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -169,7 +170,7 @@ export default function App() {
                     {currentPuzzle.title.split('：')[0]}
                   </div>
                   <p className="text-[8px] text-brand-dark/60 font-semibold leading-none mt-0.5">
-                    已完成：{solvedIndices.length} / 6
+                    已完成：{solvedIndices.length} / 7
                   </p>
                 </div>
               </div>
@@ -180,8 +181,8 @@ export default function App() {
                   const completed = index === 0
                     ? (solvedIndices.includes(0) && solvedIndices.includes(1) && solvedIndices.includes(2))
                     : index === 1
-                      ? solvedIndices.includes(3)
-                      : (solvedIndices.includes(4) && solvedIndices.includes(5));
+                      ? (solvedIndices.includes(3) && solvedIndices.includes(4))
+                      : (solvedIndices.includes(5) && solvedIndices.includes(6));
                   return (
                     <span
                       key={index}
@@ -228,12 +229,18 @@ export default function App() {
                 />
               )}
               {currentPuzzle.id === 5 && (
-                <MapPuzzle 
+                <CurtainPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 
                 />
               )}
               {currentPuzzle.id === 6 && (
+                <MapPuzzle 
+                  onSolved={() => handleSetIsCurrentSolved(true)} 
+                  isSolved={isCurrentSolved} 
+                />
+              )}
+              {currentPuzzle.id === 7 && (
                 <GridPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 

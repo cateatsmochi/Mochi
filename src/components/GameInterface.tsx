@@ -90,9 +90,10 @@ export default function GameInterface({
               <p className="text-sm font-bold text-emerald-800 leading-relaxed md:px-4">
                 {puzzle.id === 1 ? '恭喜！生态河网重建完成' :
                  puzzle.id === 2 ? '恭喜！四大明星申鱼全部寻齐' :
-                 puzzle.id === 3 ? '恭喜你造出了圆圆的滴水湖' :
+                 puzzle.id === 3 ? '恭喜！滴水湖生态多样性落差密码破解完成！' :
                  puzzle.id === 4 ? '恭喜！水生家园净化完成' :
-                 puzzle.id === 5 ? '恭喜！生态放流走廊连通成功' :
+                 puzzle.id === 5 ? '恭喜！外来入侵物种竹帘关卡核验完成！是的，这就是对上海本土鱼类威胁最大的生物' :
+                 puzzle.id === 6 ? '恭喜！生态放流走廊连通成功' :
                  '恭喜！水流格栅密码核验完成'}
               </p>
             </div>
@@ -104,9 +105,10 @@ export default function GameInterface({
               <p className="text-xs font-medium text-brand-dark/80 leading-relaxed md:px-4 text-balance">
                 {puzzle.id === 1 ? '点击任意两个方块可以使它们互换，还原“上海水系图”' :
                  puzzle.id === 2 ? '依据现场「江湖之境」实景展墙上的特有本土水族分布，在下方题目中答对全部4个问题' :
-                 puzzle.id === 3 ? '请在黑色制图板中亲手画一个规则弧度的正圆，进行蓄水开创' :
-                 puzzle.id === 4 ? '点击清除水体中的有害异物，净化环境以获取气泡信码' :
-                 puzzle.id === 5 ? '移动放流队避开路障，将中华鱼苗安全送达目的地以获取信令密码' :
+                 puzzle.id === 3 ? '利用滑拖或输入两端的本土鱼类种数揭开滴水湖与古运河的实测落差值' :
+                 puzzle.id === 4 ? '将水体内各种核心生态威胁物品拖入下方对应的保护解密站中以激活气泡信码' :
+                 puzzle.id === 5 ? '在上方掀开物理防光帘（或左右轻拖模拟帘子），并在下方点击按钮确认开启' :
+                 puzzle.id === 6 ? '移动放流队避开路障，将中华鱼苗安全送达目的地以获取信令密码' :
                  '根据前4个卡槽对应的双对角对称律，推选并选取第5组匹配的常数数字'}
               </p>
             </div>
@@ -114,7 +116,7 @@ export default function GameInterface({
         </div>
 
         {/* Answer input fields, only visible before solving non-jigsaw and non-seek levels */}
-        {!isCurrentSolved && puzzle.type !== 'jigsaw' && puzzle.type !== 'seek' && puzzle.type !== 'diversity' && (
+        {!isCurrentSolved && puzzle.type !== 'jigsaw' && puzzle.type !== 'seek' && puzzle.type !== 'diversity' && puzzle.type !== 'curtain' && (
           <div className="bg-brand-cream/40 p-4 rounded-xl border border-brand-teal/10 space-y-2.5 animate-fade-in">
             <span className="text-[10px] text-brand-dark/70 uppercase tracking-wider font-mono block text-center font-bold">
               {puzzle.type === 'ecology' ? '输入查获的气泡复苏码' : puzzle.type === 'map' ? '输入捕获的追踪芯片码' : '输入计算得出的格栅密码值'}
@@ -179,7 +181,14 @@ export default function GameInterface({
               disabled
               className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none"
             >
-              请在制图板中绘制一个圆
+              等待天平滑移吻合
+            </button>
+          ) : puzzle.type === 'curtain' ? (
+            <button
+              disabled
+              className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none animate-pulse"
+            >
+              请掀开上方的保护帘
             </button>
           ) : (
             <button
