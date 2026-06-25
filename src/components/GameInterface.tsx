@@ -8,6 +8,8 @@ interface GameInterfaceProps {
   isCurrentSolved: boolean;
   setIsCurrentSolved: (val: boolean) => void;
   isDrawnSuccessfully?: boolean;
+  hintTier: number;
+  setHintTier: (val: number | ((prev: number) => number)) => void;
 }
 
 export default function GameInterface({
@@ -15,7 +17,9 @@ export default function GameInterface({
   onCorrect,
   isCurrentSolved,
   setIsCurrentSolved,
-  isDrawnSuccessfully = false
+  isDrawnSuccessfully = false,
+  hintTier,
+  setHintTier
 }: GameInterfaceProps) {
   // Segmented input state
   const [addressPart1, setAddressPart1] = useState('');
@@ -26,7 +30,6 @@ export default function GameInterface({
   
   // Hint logic
   const [showHint, setShowHint] = useState(false);
-  const [hintTier, setHintTier] = useState(0);
   const [feedback, setFeedback] = useState<{ text: string; isError?: boolean } | null>(null);
 
   // Reset inputs when puzzle changes
@@ -35,7 +38,6 @@ export default function GameInterface({
     setAddressPart2('');
     setSingleAnswer('');
     setShowHint(false);
-    setHintTier(0);
     setFeedback(null);
   }, [puzzle]);
 
@@ -96,7 +98,7 @@ export default function GameInterface({
                  puzzle.id === 4 ? '恭喜！水生家园净化完成' :
                  puzzle.id === 5 ? '恭喜！生命暗角关卡核验完成！这就是对上海本土鱼类威胁最大的生物：人类自身。' :
                  puzzle.id === 6 ? '恭喜！原来一平方米就可以建一个博物馆，你也来加入让博物馆越来越多吧！' :
-                 '恭喜！水流格栅密码核验完成'}
+                 '恭喜！关卡核验完成'}
               </p>
             </div>
           ) : (
@@ -107,11 +109,11 @@ export default function GameInterface({
               <p className="text-xs font-medium text-brand-dark/80 leading-relaxed md:px-4 text-balance">
                 {puzzle.id === 1 ? '点击任意两个方块可以使它们互换，还原“上海水系图”' :
                  puzzle.id === 2 ? '依据现场「江湖之境」实景展墙上的特有本土水族分布，在下方题目中答对全部4个问题' :
-                 puzzle.id === 3 ? (isDrawnSuccessfully ? '利用滑拖或输入两端的本土鱼类种数揭开滴水湖与古运河的实测落差值' : '在上方画板画一个正圆以筑造滴水湖圆形湖面') :
-                 puzzle.id === 4 ? '将水体内各种核心生态威胁物品拖入下方对应的保护解密站中以激活气泡信码' :
-                 puzzle.id === 5 ? '请前往现场的「生存之战」展区，找到挂有遮光提示的物理帘子并亲手拉开它。找出对本土鱼类威胁最大的生物名称，并在下方验证框中输入。' :
+                 puzzle.id === 3 ? (isDrawnSuccessfully ? '利用滑拖或输入两端的本土鱼类种数' : '在上方画板画一个正圆') :
+                 puzzle.id === 4 ? '将威胁和保护措施一一对应' :
+                 puzzle.id === 5 ? '找到场地内的帘子并拉开它。找出对本土鱼类威胁最大的生物名称，并在下方验证框中输入。' :
                  puzzle.id === 6 ? '请在上方答对关于“小小博物馆”的两个谜题' :
-                 '根据前4个卡槽对应的双对角对称律，推选并选取第5组匹配的常数数字'}
+                 '依据提示完成当前谜题关卡'}
               </p>
             </div>
           )}

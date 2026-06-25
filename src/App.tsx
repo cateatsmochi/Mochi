@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { puzzles, type Puzzle } from './types';
 import PuzzleCard from './components/PuzzleCard';
 import GameInterface from './components/GameInterface';
@@ -7,7 +7,6 @@ import SeekPuzzle from './components/puzzle-types/SeekPuzzle';
 import DiversityPuzzle from './components/puzzle-types/DiversityPuzzle';
 import EcologyPuzzle from './components/puzzle-types/EcologyPuzzle';
 import MapPuzzle from './components/puzzle-types/MapPuzzle';
-import GridPuzzle from './components/puzzle-types/GridPuzzle';
 import CurtainPuzzle from './components/puzzle-types/CurtainPuzzle';
 import { playWaterPlop, playSuccessChime, playWaveSplash } from './utils/audio';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -19,6 +18,11 @@ export default function App() {
   const [solvedIndices, setSolvedIndices] = useState<number[]>([]);
   const [inventory, setInventory] = useState<string[]>([]);
   const [isDrawnSuccessfully, setIsDrawnSuccessfully] = useState(false);
+  const [hintTier, setHintTier] = useState(0);
+
+  useEffect(() => {
+    setHintTier(0);
+  }, [currentPuzzleIndex]);
 
   const currentPuzzle = puzzles[currentPuzzleIndex];
 
@@ -213,6 +217,7 @@ export default function App() {
                 <JigsawPuzzle 
                   onSolved={() => handleSetIsCurrentSolved(true)} 
                   isSolved={isCurrentSolved} 
+                  hintTier={hintTier}
                 />
               )}
               {currentPuzzle.id === 2 && (
@@ -247,12 +252,6 @@ export default function App() {
                   isSolved={isCurrentSolved} 
                 />
               )}
-              {currentPuzzle.id === 7 && (
-                <GridPuzzle 
-                  onSolved={() => handleSetIsCurrentSolved(true)} 
-                  isSolved={isCurrentSolved} 
-                />
-              )}
             </div>
 
             {/* Decrypting controller inputs panel */}
@@ -262,6 +261,8 @@ export default function App() {
               isCurrentSolved={isCurrentSolved}
               setIsCurrentSolved={handleSetIsCurrentSolved}
               isDrawnSuccessfully={isDrawnSuccessfully}
+              hintTier={hintTier}
+              setHintTier={setHintTier}
             />
           </div>
         )}

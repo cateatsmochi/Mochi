@@ -4,9 +4,10 @@ import { playWaterPlop, playSuccessChime } from '../../utils/audio';
 interface JigsawPuzzleProps {
   onSolved: () => void;
   isSolved: boolean;
+  hintTier?: number;
 }
 
-export default function JigsawPuzzle({ onSolved, isSolved }: JigsawPuzzleProps) {
+export default function JigsawPuzzle({ onSolved, isSolved, hintTier = 0 }: JigsawPuzzleProps) {
   // 3x3 grid tiles
   const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const [tiles, setTiles] = useState<number[]>([]);
@@ -255,8 +256,8 @@ export default function JigsawPuzzle({ onSolved, isSolved }: JigsawPuzzleProps) 
                 {/* Visual grid piece marker border */}
                 <div className="absolute inset-0 border border-white/10 pointer-events-none" />
 
-                {/* Show clean helpful numbering labels faintly unless solved */}
-                {!isSolved && (
+                {/* Show clean helpful numbering labels faintly unless solved and hintTier >= 2 */}
+                {!isSolved && hintTier >= 2 && (
                   <span className="absolute bottom-1 right-1 px-1 bg-black/60 rounded text-[9px] text-[#22D3EE] font-mono border border-brand-teal/30 scale-90">
                     {tileValue + 1}
                   </span>

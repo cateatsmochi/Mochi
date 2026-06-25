@@ -62,71 +62,13 @@ export default function MapPuzzle({ onSolved, isSolved }: MapPuzzleProps) {
       {/* 1m x 1m Micro-Museum Isometric Showcase SVG */}
       <div className="relative w-full max-w-[280px] h-48 bg-gradient-to-b from-stone-900 via-zinc-950 to-stone-950 rounded-2xl border-2 border-zinc-800 shadow-xl overflow-hidden flex flex-col items-center justify-center">
         
-        {/* Isometric schematic drawing of a 1m x 1m wood-framed museum cabinet with water organisms */}
-        <svg viewBox="0 0 200 150" className="w-full h-full opacity-90 select-none pointer-events-none">
-          <defs>
-            <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="#0891b2" stopOpacity="0.02" />
-            </linearGradient>
-            <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#78350f" />
-              <stop offset="100%" stopColor="#451a03" />
-            </linearGradient>
-          </defs>
-
-          {/* Isometric Base Grid Grid */}
-          <g transform="translate(100, 110)">
-            {/* Draw 1m x 1m wooden floor tile */}
-            <path d="M 0,-40 L 70,-5 L 0,30 L -70,-5 Z" fill="url(#woodGrad)" stroke="#1e1b4b" strokeWidth="1" />
-            <path d="M 0,-38 L 66,-5 L 0,27 L -66,-5 Z" fill="#292524" opacity="0.8" />
-            
-            {/* Grid helper lines inside the floor */}
-            <path d="M -33,-16.5 L 33,16.5 M -35,-2.5 L 35,-2.5" stroke="#444" strokeWidth="0.5" strokeDasharray="2 2" />
-            
-            {/* Ruler arrows showing 1.0m width */}
-            <path d="M -78,-5 L 0,34 M 0,34 L 78,-5" fill="none" stroke="#d97706" strokeWidth="1" strokeDasharray="2 2" opacity="0.7" />
-            <text x="-45" y="24" fill="#fbbf24" fontSize="7" fontWeight="black" transform="rotate(22 -45 24)">
-              {step === 1 && !isSolved ? "? m" : "1.0 m"}
-            </text>
-            <text x="45" y="24" fill="#fbbf24" fontSize="7" fontWeight="black" transform="rotate(-22 45 24)">
-              {step === 1 && !isSolved ? "? m" : "1.0 m"}
-            </text>
-
-            {/* Inner Glass Box columns (vertical pillars) */}
-            <line x1="-66" y1="-5" x2="-66" y2="-65" stroke="#0891b2" strokeWidth="1.5" opacity="0.6" />
-            <line x1="66" y1="-5" x2="66" y2="-65" stroke="#0891b2" strokeWidth="1.5" opacity="0.6" />
-            <line x1="0" y1="27" x2="0" y2="-33" stroke="#0891b2" strokeWidth="2" opacity="0.8" />
-            <line x1="0" y1="-38" x2="0" y2="-98" stroke="#0891b2" strokeWidth="1" opacity="0.4" />
-
-            {/* Glass panels (Polygons) */}
-            <path d="M -66,-65 L 0,-33 L 0,27 L -66,-5 Z" fill="url(#glassGrad)" stroke="#22d3ee" strokeWidth="0.5" opacity="0.5" />
-            <path d="M 0,-33 L 66,-65 L 66,-5 L 0,27 Z" fill="url(#glassGrad)" stroke="#22d3ee" strokeWidth="0.5" opacity="0.5" />
-            
-            {/* Little Waterplants inside */}
-            <path d="M -20,5 C -25,-15 -15,-30 -20,-45 M -20,5 C -15,-10 -25,-25 -22,-35" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-            <path d="M 20,-5 C 15,-20 25,-35 18,-48" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
-            
-            {/* Floating bubbles */}
-            <circle cx="-10" cy="-25" r="2" fill="#22d3ee" opacity="0.6" />
-            <circle cx="15" cy="-35" r="1.5" fill="#22d3ee" opacity="0.5" />
-            <circle cx="5" cy="-55" r="2.5" fill="#22d3ee" opacity="0.4" />
-
-            {/* A miniature swimming orange/pink native fish */}
-            <path d="M -5,-15 Q -15,-22 -22,-18" fill="none" stroke="#f43f5e" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M 15,-25 Q 5,-32 -2,-28" fill="none" stroke="#fb923c" strokeWidth="2" strokeLinecap="round" />
-            
-            {/* Top Frame Lid */}
-            <path d="M -66,-65 L 0,-93 L 66,-65 L 0,-33 Z" fill="url(#woodGrad)" stroke="#1e1b4b" strokeWidth="1" opacity="0.9" />
-            <path d="M -62,-65 L 0,-89 L 62,-65 L 0,-37 Z" fill="#1c1917" />
-          </g>
-
-          {/* Elegant Display Overlay Label */}
-          <rect x="52" y="10" width="96" height="15" rx="4" fill="#1e293b" stroke="#334155" strokeWidth="1" />
-          <text x="100" y="20" fill="#f8fafc" fontSize="6.5" fontWeight="bold" textAnchor="middle" letterSpacing="0.5">
-            {step === 1 && !isSolved ? "小小生境空间展示" : "1.0m × 1.0m = 一平米生境"}
-          </text>
-        </svg>
+        {/* Display the uploaded 1m.png image representing the micro-museum / 小小生境空间 */}
+        <img 
+          src="/images/1m.png" 
+          alt="小小生境空间" 
+          className="w-full h-full object-cover select-none pointer-events-none"
+          referrerPolicy="no-referrer"
+        />
 
         {/* Floating progress step pill */}
         {!isSolved && (

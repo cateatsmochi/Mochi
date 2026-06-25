@@ -48,7 +48,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
     },
     {
       id: 'task3',
-      question: '🔍 寻找【必须与河蚬等贝壳共生】的彩虹小鱼？',
+      question: '🔍 谁是【必须与河蚬等贝壳共生】的彩虹小鱼？',
       hint: '提示：身躯细扁，在阳光下呈现斑斓的青紫色，常出没于贝类砂砾间。',
       correctAnswer: 'bitterling',
       options: [
@@ -59,7 +59,7 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
     },
     {
       id: 'task4',
-      question: '🔍 寻找无鳞、长着四对长须的“贴地飞行鱼”？',
+      question: '🔍 谁是无鳞、长着四对长须的“贴地飞行鱼”？',
       hint: '提示：嘴部朝下，在潮湿幽暗的江底乱石缝中，靠敏锐的触觉贴身滑行。',
       correctAnswer: 'catfish',
       options: [
@@ -129,9 +129,6 @@ export default function SeekPuzzle({ onSolved, isSolved }: SeekPuzzleProps) {
                   <h4 className="text-[13px] font-black text-brand-dark leading-snug">
                     {task.question}
                   </h4>
-                  <p className="text-[11px] text-brand-dark/60 mt-0.5 font-medium">
-                    {task.hint}
-                  </p>
                 </div>
                 {isCorrect && (
                   <span className="bg-brand-green text-white text-[11px] px-2 py-0.5 rounded-full font-bold uppercase select-none shrink-0">
