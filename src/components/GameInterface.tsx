@@ -109,7 +109,7 @@ export default function GameInterface({
               <p className="text-xs font-medium text-brand-dark/80 leading-relaxed md:px-4 text-balance">
                 {puzzle.id === 1 ? '点击任意两个方块可以使它们互换，还原“上海水系图”' :
                  puzzle.id === 2 ? '依据现场「江湖之境」实景展墙上的特有本土水族分布，在下方题目中答对全部4个问题' :
-                 puzzle.id === 3 ? (isDrawnSuccessfully ? '利用滑拖或输入两端的本土鱼类种数' : '在上方画板画一个正圆') :
+                 puzzle.id === 3 ? (isDrawnSuccessfully ? '找到滴水湖和自然运河的生境数据' : '在上方画板画一个正圆') :
                  puzzle.id === 4 ? '将威胁和保护措施一一对应' :
                  puzzle.id === 5 ? '找到场地内的帘子并拉开它。找出对本土鱼类威胁最大的生物名称，并在下方验证框中输入。' :
                  puzzle.id === 6 ? '请在上方答对关于“小小博物馆”的两个谜题' :
@@ -185,7 +185,7 @@ export default function GameInterface({
               disabled
               className="p-2.5 bg-brand-dark/5 text-brand-dark/30 border border-brand-teal/10 rounded-xl font-bold text-xs cursor-not-allowed select-none"
             >
-              {isDrawnSuccessfully ? '等待天平滑移吻合' : '请先在画板中绘制一个圆'}
+              {isDrawnSuccessfully ? '等待天平吻合' : '请先在画板中绘制一个圆'}
             </button>
           ) : puzzle.type === 'curtain' ? (
             <button

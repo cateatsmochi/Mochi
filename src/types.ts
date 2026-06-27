@@ -58,7 +58,7 @@ export const puzzles: Puzzle[] = [
     speciesName: '多样性群落 (Fish Community)',
     scientificName: 'Shanghai Aquatic Biodiversity',
     conservationStatus: 'Near Threatened',
-    description: '对比人工水体与历史天然河道的生物承载率。上海不同水体的鱼类多样性差异显著。请移步到『江湖之境』展墙下方，在实景科学考察图表中，分别探寻人造滴水湖与天然古运河的鱼类登记数量，通过滑动生态管阀破解生命差值密钥！',
+    description: '对比人工水体与历史天然河道的生物承载率。上海不同水体的鱼类多样性差异显著。请移步到『江湖之境』展墙下方，在实景科学考察图表中，分别探寻人造滴水湖与自然运河的鱼类登记数量，通过滑动生态管阀破解生命差值密钥！',
     storyContext: '一方水土养一方鱼。',
     hints: [
       '第一步：请找到『滴水湖』生态对比版块，仔细看上面写明的调查发现鱼类为多少“种”（小于30的一个偶数）。',

@@ -8,6 +8,7 @@ import DiversityPuzzle from './components/puzzle-types/DiversityPuzzle';
 import EcologyPuzzle from './components/puzzle-types/EcologyPuzzle';
 import MapPuzzle from './components/puzzle-types/MapPuzzle';
 import CurtainPuzzle from './components/puzzle-types/CurtainPuzzle';
+import AquariumGame from './components/puzzle-types/AquariumGame';
 import { playWaterPlop, playSuccessChime, playWaveSplash } from './utils/audio';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -88,6 +89,14 @@ export default function App() {
     setIsDrawnSuccessfully(false);
     setGameState('welcome');
   };
+
+  if (gameState === 'victory') {
+    return (
+      <div className="fixed inset-0 w-screen h-screen z-50 bg-slate-950 overflow-hidden">
+        <AquariumGame onRestart={resetGame} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-brand-cream text-brand-dark font-display pb-12 flex flex-col items-center relative overflow-x-hidden">
@@ -264,60 +273,6 @@ export default function App() {
               hintTier={hintTier}
               setHintTier={setHintTier}
             />
-          </div>
-        )}
-
-        {/* 3. VICTORY AND IMPACT SUMMARY */}
-        {gameState === 'victory' && (
-          <div className="mt-4 bg-brand-paper rounded-3xl border border-brand-teal/15 p-6 md:p-8 shadow-sm text-center space-y-6 animate-fade-in relative overflow-hidden">
-            
-            {/* Seal of honor visual */}
-            <div className="relative z-10 w-20 h-20 bg-brand-dark text-white rounded-full mx-auto flex items-center justify-center text-4xl shadow-md border-4 border-brand-cream animate-bounce">
-              🐳
-            </div>
-
-            <div className="space-y-2 relative z-10">
-              <span className="text-[10px] tracking-widest bg-brand-teal/10 text-brand-teal border-2 border-brand-teal/20 px-3 py-1.5 rounded-full font-mono font-bold">
-                生态探索任务圆满达成！
-              </span>
-              <h2 className="text-3xl font-bold text-brand-dark tracking-tight">水域复苏守护者</h2>
-              <p className="text-xs text-brand-dark/70 italic font-mono">授给致力于保护河道多样化的绿色倡导先锋</p>
-            </div>
-
-            {/* Scientific progress stats card */}
-            <div className="bg-brand-cream p-5 rounded-3xl border-2 border-brand-teal/25 text-left space-y-4 shadow-sm select-text relative z-10">
-              <span className="text-[9px] uppercase tracking-wider text-brand-green font-mono font-bold">
-                您的解谜与修复贡献 / RECLAMATION REWARDS
-              </span>
-              
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="border-r border-brand-teal/20 py-1">
-                  <div className="text-2xl font-black text-brand-dark">1,200 尾</div>
-                  <div className="text-[9px] text-brand-dark/70">保护区鱼苗顺利放归</div>
-                </div>
-                <div className="py-1">
-                  <div className="text-2xl font-black text-brand-dark">100%</div>
-                  <div className="text-[9px] text-brand-dark/70">弄堂溪流生境复原率</div>
-                </div>
-              </div>
-
-              <p className="text-xs text-brand-dark/80 leading-relaxed border-t border-brand-teal/15 pt-3.5">
-                感谢你成功复原了松江鲈河道图，抚平了弄堂溪流中的各种废弃水泥底面与外来垃圾，并在康平路105号生境站建立安全走廊！你的每一个点击都在提醒我们：<b>河流不是冷冰冰的行洪通道，而是生命繁衍的生息廊道。</b>
-              </p>
-            </div>
-
-            <div className="space-y-3 relative z-10">
-              <button
-                onClick={resetGame}
-                className="w-full py-4 bg-brand-teal hover:bg-brand-dark text-white rounded-2xl font-bold text-xs tracking-widest transition-all shadow-md active:translate-y-0.5"
-              >
-                重温百川解谜之旅 ↺
-              </button>
-              
-              <p className="text-[10px] text-brand-dark/50 font-mono italic">
-                上海市水生生态网络保护小组 · 启迪明天 (2026)
-              </p>
-            </div>
           </div>
         )}
 

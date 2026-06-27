@@ -424,7 +424,7 @@ export default function DiversityPuzzle({
             return '数值不合理。请用横梁拖滑或在下方输入合理的正整数进行比对。';
           }
           if (dishuiCount > naturalCount) {
-            return `非自然生态：人造底质由于空间及硬化限制，留存种数(${dishuiCount}种)很难超越连通性极佳的古运河(${naturalCount}种)。请重置或调整。`;
+            return `非自然生态：人造底质由于空间及硬化限制，留存种数(${dishuiCount}种)很难超越连通性极佳的运河(${naturalCount}种)。请重置或调整。`;
           }
           return `模拟演替中：当前将人工规则湖滩设置为 ${dishuiCount} 种，自然漫滩设定为 ${naturalCount} 种。请继续调校至实测的科学数据解密。`;
         };
@@ -497,7 +497,7 @@ export default function DiversityPuzzle({
                       
                       {/* Text label underneath */}
                       <text x={rightHookX} y={rightHookY + 48} textAnchor="middle" className="text-[7.5px] font-bold fill-emerald-900/60 font-sans tracking-wide">
-                        古运河(天然)
+                        运河(天然)
                       </text>
                     </g>
                   </svg>
@@ -541,9 +541,11 @@ export default function DiversityPuzzle({
                   </div>
 
                   {/* Touch Helper hint */}
-                  <div className="absolute bottom-1 w-full text-[9.5px] text-teal-700/60 font-medium select-none text-center font-sans">
-                    {activeDragSide ? `✍️ 正在拖拽${activeDragSide === 'left' ? '滴水湖' : '古运河'}托盘...` : '💡 可在托盘上上下拖拽改变数值，或在下方区域直接输入/增减精确调整'}
-                  </div>
+                  {activeDragSide && (
+                    <div className="absolute bottom-1 w-full text-[9.5px] text-teal-700/60 font-medium select-none text-center font-sans">
+                      ✍️ 正在拖拽{activeDragSide === 'left' ? '滴水湖' : '运河'}托盘...
+                    </div>
+                  )}
                 </div>
               );
             })()}
@@ -582,7 +584,7 @@ export default function DiversityPuzzle({
 
               {/* Right Input Box */}
               <div className="flex flex-col space-y-1 text-center bg-emerald-50/40 p-1.5 rounded-lg border border-emerald-100/40">
-                <span className="text-[9px] font-black text-emerald-800 tracking-tight">古连通运河(种)</span>
+                <span className="text-[9px] font-black text-emerald-800 tracking-tight">自然运河(种)</span>
                 <div className="flex items-center justify-center space-x-1.5">
                   <button 
                     type="button"
